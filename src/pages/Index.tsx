@@ -54,9 +54,6 @@ const Index = () => {
     });
     setLastAddedProductId(id);
     setAddVersion((v) => v + 1);
-    // Auto-navigate to assistant
-    setPrevSection(section);
-    setSection("assistant");
     setShowToast(true);
     setTimeout(() => setShowToast(false), 2500);
   }, [section]);
