@@ -52,9 +52,14 @@ const Index = () => {
       }
       return [...prev, { id: p.id, name: p.name, emoji: p.emoji, price: p.now, qty: 1 }];
     });
+    setLastAddedProductId(id);
+    setAddVersion((v) => v + 1);
+    // Auto-navigate to assistant
+    setPrevSection(section);
+    setSection("assistant");
     setShowToast(true);
     setTimeout(() => setShowToast(false), 2500);
-  }, []);
+  }, [section]);
 
   const changeQty = useCallback((id: string, delta: number) => {
     setCart((prev) =>
