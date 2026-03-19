@@ -84,7 +84,13 @@ const Index = () => {
         {section === "campaigns" && <CampaignsSection onOpenProduct={openProduct} />}
         {section === "products" && <ProductsSection />}
         {section === "assistant" && (
-          <AssistantSection cart={cart} onChangeQty={changeQty} onRemoveFromCart={removeFromCart} />
+          <AssistantSection
+            cart={cart}
+            onChangeQty={changeQty}
+            onRemoveFromCart={removeFromCart}
+            lastAddedProductId={lastAddedProductId}
+            addVersion={addVersion}
+          />
         )}
         {section === "contact" && <ContactSection />}
         {section === "product-detail" && productId && (
