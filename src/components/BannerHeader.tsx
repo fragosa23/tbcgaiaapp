@@ -17,7 +17,7 @@ const BannerHeader = ({ onNavigate }: BannerHeaderProps) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <div className="relative flex-shrink-0 sticky top-0 z-[101] w-full overflow-visible bg-gradient-to-r from-pink-light via-pink to-pink-light">
+    <div className="relative flex-shrink-0 sticky top-0 z-[101] w-full overflow-visible" style={{ background: 'linear-gradient(135deg, hsl(340 33% 96%), hsl(340 50% 92%), hsl(340 33% 96%))' }}>
       <div className="flex items-center justify-between h-[70px] max-md:h-[56px] px-4">
         {/* Logo button */}
         <button
@@ -33,6 +33,16 @@ const BannerHeader = ({ onNavigate }: BannerHeaderProps) => {
             Início
           </span>
         </button>
+
+        {/* Center title */}
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none select-none">
+          <span className="font-display text-[15px] max-md:text-[12px] tracking-[0.15em] uppercase text-foreground/80 leading-tight block">
+            TheBeautyCorner
+          </span>
+          <span className="font-body text-[9px] max-md:text-[8px] tracking-[0.3em] uppercase text-muted-foreground block mt-0.5">
+            GAIA — APP
+          </span>
+        </div>
 
         {/* Hamburger */}
         <button
