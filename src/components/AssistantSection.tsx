@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect } from "react";
-import { getChatResponse } from "@/data/products";
+import { useState, useRef, useEffect, useCallback } from "react";
+import { getChatResponse, campaigns } from "@/data/products";
 
 interface CartItem {
   id: string;
@@ -13,11 +13,15 @@ interface AssistantSectionProps {
   cart: CartItem[];
   onChangeQty: (id: string, delta: number) => void;
   onRemoveFromCart: (id: string) => void;
+  lastAddedProductId: string | null;
+  addVersion: number;
 }
 
 interface Message {
-  text: string;
+  id: number;
+  content: string;
   role: "bot" | "user";
+  type?: "text" | "cart-summary" | "wa-prompt";
 }
 
 const suggestions = [
@@ -29,14 +33,17 @@ const suggestions = [
   { emoji: "🌊", text: "Produtos para cabelo danificado?", label: "Cabelo danificado" },
 ];
 
-const AssistantSection = ({ cart, onChangeQty, onRemoveFromCart }: AssistantSectionProps) => {
+let msgCounter = 1;
+
+const AssistantSection = ({ cart, onChangeQty, onRemoveFromCart, lastAddedProductId, addVersion }: AssistantSectionProps) => {
   const [messages, setMessages] = useState<Message[]>([
-    { text: 'Olá! Sou a <strong>Gaia</strong>, a sua consultora de beleza virtual. 💄<br/>Como posso ajudá-la hoje?', role: "bot" },
+    { id: 0, content: 'Olá! Sou a <strong>Gaia</strong>, a sua consultora de beleza virtual. 💄<br/>Como posso ajudá-la hoje?', role: "bot", type: "text" },
   ]);
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
-  const [showWaPrompt, setShowWaPrompt] = useState(true);
+  const [waOpened, setWaOpened] = useState(false);
   const messagesRef = useRef<HTMLDivElement>(null);
+  const prevAddVersion = useRef(0);
 
   useEffect(() => {
     if (messagesRef.current) {
@@ -44,19 +51,60 @@ const AssistantSection = ({ cart, onChangeQty, onRemoveFromCart }: AssistantSect
     }
   }, [messages, typing]);
 
-  const sendMessage = (text?: string) => {
+  // React to product being added
+  useEffect(() => {
+    if (addVersion > 0 && addVersion !== prevAddVersion.current && lastAddedProductId) {
+      prevAddVersion.current = addVersion;
+      const product = campaigns.find((c) => c.id === lastAddedProductId);
+      if (!product) return;
+
+      const addMsg: Message = {
+        id: msgCounter++,
+        content: `${product.emoji} <strong>${product.name}</strong> adicionado ao seu carrinho! — ${product.now}`,
+        role: "bot",
+        type: "text",
+      };
+
+      setMessages((prev) => {
+        // Remove old cart-summary and wa-prompt
+        const filtered = prev.filter((m) => m.type !== "cart-summary" && m.type !== "wa-prompt");
+        return [
+          ...filtered,
+          addMsg,
+          { id: msgCounter++, content: "", role: "bot", type: "cart-summary" },
+          { id: msgCounter++, content: "", role: "bot", type: "wa-prompt" },
+        ];
+      });
+      setWaOpened(false);
+    }
+  }, [addVersion, lastAddedProductId]);
+
+  // Update cart-summary messages when cart changes (qty changes / removals)
+  useEffect(() => {
+    setMessages((prev) => {
+      const hasCartSummary = prev.some((m) => m.type === "cart-summary");
+      if (!hasCartSummary) return prev;
+      if (cart.length === 0) {
+        // Remove cart-summary and wa-prompt if cart is empty
+        return prev.filter((m) => m.type !== "cart-summary" && m.type !== "wa-prompt");
+      }
+      return prev; // cart-summary reads from cart prop directly
+    });
+  }, [cart]);
+
+  const sendMessage = useCallback((text?: string) => {
     const t = (text || input).trim();
     if (!t) return;
-    setMessages((prev) => [...prev, { text: t, role: "user" }]);
+    setMessages((prev) => [...prev, { id: msgCounter++, content: t, role: "user", type: "text" }]);
     setInput("");
     setTyping(true);
     setTimeout(() => {
       setTyping(false);
-      setMessages((prev) => [...prev, { text: getChatResponse(t), role: "bot" }]);
+      setMessages((prev) => [...prev, { id: msgCounter++, content: getChatResponse(t), role: "bot", type: "text" }]);
     }, 800 + Math.random() * 700);
-  };
+  }, [input]);
 
-  const sendCartToWhatsApp = () => {
+  const sendCartToWhatsApp = useCallback(() => {
     if (cart.length === 0) return;
     let msg = "Olá! Gostaria de saber mais informações sobre os seguintes produtos:%0A%0A";
     cart.forEach((item) => {
@@ -64,6 +112,110 @@ const AssistantSection = ({ cart, onChangeQty, onRemoveFromCart }: AssistantSect
     });
     msg += "%0AObrigada! 💖";
     window.open(`https://wa.me/351910000000?text=${msg}`, "_blank");
+    setWaOpened(true);
+
+    // Add confirmation message
+    setMessages((prev) => [
+      ...prev.filter((m) => m.type !== "wa-prompt"),
+      {
+        id: msgCounter++,
+        content: "A sua mensagem foi enviada via WhatsApp! 💬✅<br/><br/>A nossa equipa irá contactá-la em breve para confirmar a sua encomenda. Obrigada pela preferência! 💖",
+        role: "bot",
+        type: "text",
+      },
+    ]);
+  }, [cart]);
+
+  const renderMessage = (msg: Message) => {
+    if (msg.type === "cart-summary") {
+      if (cart.length === 0) return null;
+      return (
+        <div key={msg.id} className="flex gap-2.5">
+          <div className="w-[30px] h-[30px] rounded-full flex-shrink-0 bg-gradient-to-br from-pink-light to-pink flex items-center justify-center text-[13px]">
+            🛍️
+          </div>
+          <div className="max-w-[85%] py-3 px-4 rounded-[18px] rounded-bl-[4px] bg-pink-pale text-foreground">
+            <p className="text-[12px] font-semibold text-pink-deep mb-2">O seu carrinho:</p>
+            {cart.map((item) => (
+              <div key={item.id} className="flex items-center gap-2 py-1.5 border-b border-border/50 last:border-b-0">
+                <span className="text-[18px]">{item.emoji}</span>
+                <span className="flex-1 text-[12px] font-medium text-foreground leading-tight">{item.name}</span>
+                <span className="text-[11px] font-semibold text-pink-deep">{item.price}</span>
+                <div className="flex items-center gap-1 flex-shrink-0">
+                  <button
+                    onClick={() => onChangeQty(item.id, -1)}
+                    className="w-5 h-5 rounded-md border border-border bg-white text-pink-deep text-[11px] font-bold flex items-center justify-center cursor-pointer hover:bg-pink-light transition-all"
+                  >−</button>
+                  <span className="w-5 text-center text-[11px] font-semibold">{item.qty}</span>
+                  <button
+                    onClick={() => onChangeQty(item.id, 1)}
+                    className="w-5 h-5 rounded-md border border-border bg-white text-pink-deep text-[11px] font-bold flex items-center justify-center cursor-pointer hover:bg-pink-light transition-all"
+                  >+</button>
+                </div>
+                <button
+                  onClick={() => onRemoveFromCart(item.id)}
+                  className="w-5 h-5 rounded-md bg-pink-deep/10 text-pink-deep text-[11px] flex items-center justify-center cursor-pointer hover:bg-pink-light transition-all flex-shrink-0"
+                >✕</button>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    if (msg.type === "wa-prompt") {
+      if (cart.length === 0 || waOpened) return null;
+      return (
+        <div key={msg.id} className="flex gap-2.5">
+          <div className="w-[30px] h-[30px] rounded-full flex-shrink-0 bg-gradient-to-br from-pink-light to-pink flex items-center justify-center text-[13px]">
+            🌸
+          </div>
+          <div className="max-w-[85%] py-3 px-4 rounded-[18px] rounded-bl-[4px] bg-pink-pale text-foreground">
+            <p className="text-[13px] leading-relaxed mb-3">
+              Deseja enviar o seu pedido para a loja via <strong>WhatsApp</strong> para pedir orçamento ou encomendar? 💬
+            </p>
+            <div className="flex gap-2 flex-wrap">
+              <button
+                onClick={sendCartToWhatsApp}
+                className="px-4 py-2 rounded-full font-body text-[11px] font-medium tracking-wider uppercase bg-gradient-to-r from-pink to-pink-deep text-primary-foreground shadow-sm border-none cursor-pointer hover:scale-[1.04] transition-all"
+              >
+                Sim, enviar via WhatsApp
+              </button>
+              <button
+                onClick={() => setWaOpened(true)}
+                className="px-4 py-2 rounded-full font-body text-[11px] font-medium tracking-wider uppercase bg-white/80 text-pink-deep border border-pink cursor-pointer hover:bg-pink-light transition-all"
+              >
+                Agora não
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Regular text message
+    return (
+      <div key={msg.id} className={`flex gap-2.5 ${msg.role === "user" ? "flex-row-reverse" : ""}`}>
+        {msg.role === "bot" && (
+          <div className="w-[30px] h-[30px] rounded-full flex-shrink-0 bg-gradient-to-br from-pink-light to-pink flex items-center justify-center text-[13px]">
+            🌸
+          </div>
+        )}
+        <div
+          className={`max-w-[78%] py-[11px] px-[15px] rounded-[18px] text-[13px] leading-relaxed ${
+            msg.role === "bot"
+              ? "bg-pink-pale text-foreground rounded-bl-[4px]"
+              : "bg-gradient-to-br from-pink to-pink-deep text-primary-foreground rounded-br-[4px]"
+          }`}
+          dangerouslySetInnerHTML={{ __html: msg.content }}
+        />
+        {msg.role === "user" && (
+          <div className="w-[30px] h-[30px] rounded-full flex-shrink-0 bg-gradient-to-br from-pink to-pink-deep flex items-center justify-center text-[13px]">
+            👤
+          </div>
+        )}
+      </div>
+    );
   };
 
   return (
@@ -76,65 +228,6 @@ const AssistantSection = ({ cart, onChangeQty, onRemoveFromCart }: AssistantSect
       </h2>
       <div className="w-11 h-0.5 bg-gradient-to-r from-pink to-transparent rounded-full mt-4 mb-10" />
 
-      {/* Cart */}
-      {cart.length > 0 && (
-        <div className="mb-6">
-          <div className="bg-white/85 backdrop-blur-[14px] rounded-lg border border-border shadow-elevated p-6">
-            <h3 className="font-display text-[22px] font-normal text-foreground mb-[18px]">🛍️ O seu pedido</h3>
-            {cart.map((item) => (
-              <div key={item.id} className="flex items-center gap-3 py-3 border-b border-border last:border-b-0">
-                <span className="text-[28px] flex-shrink-0">{item.emoji}</span>
-                <span className="flex-1 font-display text-base font-semibold text-foreground">{item.name}</span>
-                <span className="text-sm font-semibold text-pink-deep mr-2">{item.price}</span>
-                <div className="flex items-center gap-1.5 flex-shrink-0">
-                  <button
-                    onClick={() => onChangeQty(item.id, -1)}
-                    className="w-[26px] h-[26px] rounded-lg border-[1.5px] border-border bg-white text-pink-deep text-sm font-semibold flex items-center justify-center cursor-pointer hover:bg-pink-light hover:border-pink transition-all"
-                  >
-                    −
-                  </button>
-                  <span className="w-7 text-center text-sm font-semibold text-foreground">{item.qty}</span>
-                  <button
-                    onClick={() => onChangeQty(item.id, 1)}
-                    className="w-[26px] h-[26px] rounded-lg border-[1.5px] border-border bg-white text-pink-deep text-sm font-semibold flex items-center justify-center cursor-pointer hover:bg-pink-light hover:border-pink transition-all"
-                  >
-                    +
-                  </button>
-                </div>
-                <button
-                  onClick={() => onRemoveFromCart(item.id)}
-                  className="w-7 h-7 rounded-lg border-none bg-pink-deep/10 text-pink-deep text-base flex items-center justify-center cursor-pointer hover:bg-pink-light transition-all flex-shrink-0"
-                >
-                  ✕
-                </button>
-              </div>
-            ))}
-            {showWaPrompt && (
-              <div className="mt-5 p-[18px] bg-pink-pale rounded-[14px] border border-border">
-                <p className="text-sm text-foreground mb-3.5 leading-relaxed">
-                  Quer enviar uma mensagem para o <strong>WhatsApp</strong> e pedir mais informações do seu pedido? 💬
-                </p>
-                <div className="flex gap-2.5 flex-wrap">
-                  <button
-                    onClick={sendCartToWhatsApp}
-                    className="px-6 py-3 rounded-full font-body text-xs font-medium tracking-wider uppercase bg-gradient-to-r from-pink to-pink-deep text-primary-foreground shadow-[0_8px_28px_hsla(342,45%,55%,0.35)] border-none cursor-pointer hover:scale-[1.04] transition-all"
-                  >
-                    Sim, enviar via WhatsApp
-                  </button>
-                  <button
-                    onClick={() => setShowWaPrompt(false)}
-                    className="px-6 py-3 rounded-full font-body text-xs font-medium tracking-wider uppercase bg-white/80 text-pink-deep border-2 border-pink cursor-pointer hover:bg-pink-light transition-all"
-                  >
-                    Agora não
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Chat + bubbles */}
       <div className="grid grid-cols-[1fr_300px] gap-6 items-start max-[900px]:grid-cols-1">
         {/* Chat */}
         <div className="bg-white/85 backdrop-blur-[14px] rounded-lg border border-border overflow-hidden shadow-elevated flex flex-col h-[520px]">
@@ -151,28 +244,7 @@ const AssistantSection = ({ cart, onChangeQty, onRemoveFromCart }: AssistantSect
             </div>
           </div>
           <div ref={messagesRef} className="flex-1 overflow-y-auto p-[18px] flex flex-col gap-3">
-            {messages.map((msg, i) => (
-              <div key={i} className={`flex gap-2.5 ${msg.role === "user" ? "flex-row-reverse" : ""}`}>
-                {msg.role === "bot" && (
-                  <div className="w-[30px] h-[30px] rounded-full flex-shrink-0 bg-gradient-to-br from-pink-light to-pink flex items-center justify-center text-[13px]">
-                    🌸
-                  </div>
-                )}
-                <div
-                  className={`max-w-[78%] py-[11px] px-[15px] rounded-[18px] text-[13px] leading-relaxed ${
-                    msg.role === "bot"
-                      ? "bg-pink-pale text-foreground rounded-bl-[4px]"
-                      : "bg-gradient-to-br from-pink to-pink-deep text-primary-foreground rounded-br-[4px]"
-                  }`}
-                  dangerouslySetInnerHTML={{ __html: msg.text }}
-                />
-                {msg.role === "user" && (
-                  <div className="w-[30px] h-[30px] rounded-full flex-shrink-0 bg-gradient-to-br from-pink to-pink-deep flex items-center justify-center text-[13px]">
-                    👤
-                  </div>
-                )}
-              </div>
-            ))}
+            {messages.map((msg) => renderMessage(msg))}
             {typing && (
               <div className="flex gap-2.5">
                 <div className="w-[30px] h-[30px] rounded-full flex-shrink-0 bg-gradient-to-br from-pink-light to-pink flex items-center justify-center text-[13px]">

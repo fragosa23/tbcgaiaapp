@@ -24,6 +24,8 @@ const Index = () => {
   const [productId, setProductId] = useState<string | null>(null);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [showToast, setShowToast] = useState(false);
+  const [lastAddedProductId, setLastAddedProductId] = useState<string | null>(null);
+  const [addVersion, setAddVersion] = useState(0);
 
   const navigate = useCallback((id: string) => {
     setPrevSection(section);
@@ -50,9 +52,14 @@ const Index = () => {
       }
       return [...prev, { id: p.id, name: p.name, emoji: p.emoji, price: p.now, qty: 1 }];
     });
+    setLastAddedProductId(id);
+    setAddVersion((v) => v + 1);
+    // Auto-navigate to assistant
+    setPrevSection(section);
+    setSection("assistant");
     setShowToast(true);
     setTimeout(() => setShowToast(false), 2500);
-  }, []);
+  }, [section]);
 
   const changeQty = useCallback((id: string, delta: number) => {
     setCart((prev) =>
@@ -77,7 +84,13 @@ const Index = () => {
         {section === "campaigns" && <CampaignsSection onOpenProduct={openProduct} />}
         {section === "products" && <ProductsSection />}
         {section === "assistant" && (
-          <AssistantSection cart={cart} onChangeQty={changeQty} onRemoveFromCart={removeFromCart} />
+          <AssistantSection
+            cart={cart}
+            onChangeQty={changeQty}
+            onRemoveFromCart={removeFromCart}
+            lastAddedProductId={lastAddedProductId}
+            addVersion={addVersion}
+          />
         )}
         {section === "contact" && <ContactSection />}
         {section === "product-detail" && productId && (
