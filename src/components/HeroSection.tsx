@@ -8,9 +8,6 @@ interface HeroSectionProps {
 const HeroSection = ({ onNavigate, onOpenProduct }: HeroSectionProps) => {
   return (
     <section className="flex flex-col items-center justify-center text-center px-7 pt-[52px] min-h-[calc(100vh-212px)]">
-      <span className="inline-block text-[11px] tracking-[.18em] uppercase text-pink-deep bg-pink/15 border border-pink/40 rounded-full px-[22px] py-[7px] mb-7 animate-fade-up">
-        ✨ Beleza & Cuidado Pessoal
-      </span>
       <h1 className="font-display text-[clamp(38px,7vw,78px)] font-light text-foreground leading-[1.0] mb-5 animate-fade-up-delay-1">
         A Sua Beleza,<br />
         o Nosso <em className="italic text-pink-deep">Cuidado</em>
