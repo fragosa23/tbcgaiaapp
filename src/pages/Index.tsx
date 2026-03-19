@@ -24,6 +24,8 @@ const Index = () => {
   const [productId, setProductId] = useState<string | null>(null);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [showToast, setShowToast] = useState(false);
+  const [lastAddedProductId, setLastAddedProductId] = useState<string | null>(null);
+  const [addVersion, setAddVersion] = useState(0);
 
   const navigate = useCallback((id: string) => {
     setPrevSection(section);
