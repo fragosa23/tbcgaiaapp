@@ -1,5 +1,5 @@
 import { useState } from "react";
-import bannerImg from "@/assets/banner.jpg";
+import logoImg from "@/assets/logo-bc.png";
 
 interface BannerHeaderProps {
   onNavigate: (section: string) => void;
@@ -17,33 +17,37 @@ const BannerHeader = ({ onNavigate }: BannerHeaderProps) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <div className="relative flex-shrink-0 sticky top-0 z-[101] w-full overflow-visible bg-pink">
-      <img
-        src={bannerImg}
-        alt="The Beauty Corner Gaia"
-        className="w-full h-auto max-h-[160px] object-cover object-left block md:max-h-[160px] max-md:max-h-[110px] max-sm:max-h-[90px]"
-      />
-      {/* Clickable logo zone */}
-      <div
-        className="absolute top-0 left-0 w-[35%] h-full cursor-pointer z-10 group max-md:w-[45%]"
-        onClick={() => onNavigate("home")}
-      >
-        <span className="absolute bottom-2 left-1/2 -translate-x-1/2 bg-pink-deep/85 text-primary-foreground text-[11px] font-medium tracking-wider px-3 py-1 rounded-full whitespace-nowrap font-body opacity-0 group-hover:opacity-100 transition-opacity">
-          🏠 Início
-        </span>
+    <div className="relative flex-shrink-0 sticky top-0 z-[101] w-full overflow-visible bg-gradient-to-r from-pink-light via-pink to-pink-light">
+      <div className="flex items-center justify-between h-[70px] max-md:h-[56px] px-4">
+        {/* Logo button */}
+        <button
+          className="relative group h-[44px] max-md:h-[36px] cursor-pointer bg-transparent border-none p-0"
+          onClick={() => onNavigate("home")}
+        >
+          <img
+            src={logoImg}
+            alt="The Beauty Corner"
+            className="h-full w-auto object-contain"
+          />
+          <span className="absolute -bottom-7 left-1/2 -translate-x-1/2 bg-pink-deep/85 text-primary-foreground text-[11px] font-medium tracking-wider px-3 py-1 rounded-full whitespace-nowrap font-body opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+            Início
+          </span>
+        </button>
+
+        {/* Hamburger */}
+        <button
+          className="z-20 bg-background/25 backdrop-blur-sm border border-background/40 rounded-xl p-2.5 cursor-pointer flex flex-col gap-[5px] hover:bg-background/45 transition-colors"
+          onClick={(e) => {
+            e.stopPropagation();
+            setMenuOpen(!menuOpen);
+          }}
+        >
+          <span className="block w-[22px] h-[2px] bg-foreground rounded-full" />
+          <span className="block w-[22px] h-[2px] bg-foreground rounded-full" />
+          <span className="block w-[22px] h-[2px] bg-foreground rounded-full" />
+        </button>
       </div>
-      {/* Hamburger */}
-      <button
-        className="absolute top-1/2 right-5 -translate-y-1/2 z-20 bg-white/25 backdrop-blur-sm border border-white/40 rounded-xl p-2.5 cursor-pointer flex flex-col gap-[5px] hover:bg-white/45 transition-colors"
-        onClick={(e) => {
-          e.stopPropagation();
-          setMenuOpen(!menuOpen);
-        }}
-      >
-        <span className="block w-[22px] h-[2px] bg-foreground rounded-full" />
-        <span className="block w-[22px] h-[2px] bg-foreground rounded-full" />
-        <span className="block w-[22px] h-[2px] bg-foreground rounded-full" />
-      </button>
+
       {/* Dropdown nav */}
       {menuOpen && (
         <div
