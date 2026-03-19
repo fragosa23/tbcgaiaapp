@@ -11,14 +11,18 @@ const ProductDetail = ({ productId, onBack, onNavigate, onAddToCart }: ProductDe
   const product = campaigns.find((p) => p.id === productId) as Campaign;
   if (!product) return null;
 
+  const backButton = (
+    <button
+      onClick={onBack}
+      className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full font-body text-xs font-medium tracking-wider uppercase cursor-pointer bg-white/80 text-pink-deep border-2 border-pink hover:bg-pink-light transition-all"
+    >
+      ← Voltar
+    </button>
+  );
+
   return (
     <section className="px-9 py-[52px] pb-[72px] max-w-[1120px] mx-auto max-md:px-[18px] max-md:py-8">
-      <button
-        onClick={onBack}
-        className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full font-body text-xs font-medium tracking-wider uppercase cursor-pointer bg-white/80 text-pink-deep border-2 border-pink hover:bg-pink-light transition-all mb-8"
-      >
-        ← Voltar
-      </button>
+      <div className="mb-8">{backButton}</div>
 
       <div className="grid grid-cols-2 gap-12 items-start max-md:grid-cols-1 max-md:gap-7">
         {/* Image */}
@@ -88,6 +92,8 @@ const ProductDetail = ({ productId, onBack, onNavigate, onAddToCart }: ProductDe
           </div>
         </div>
       </div>
+
+      <div className="mt-10 flex justify-center">{backButton}</div>
     </section>
   );
 };
