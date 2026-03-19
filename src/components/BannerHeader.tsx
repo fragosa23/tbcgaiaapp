@@ -34,6 +34,16 @@ const BannerHeader = ({ onNavigate }: BannerHeaderProps) => {
           </span>
         </button>
 
+        {/* Center title */}
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none select-none">
+          <span className="font-display text-[15px] max-md:text-[12px] tracking-[0.15em] uppercase text-foreground/80 leading-tight block">
+            TheBeautyCorner
+          </span>
+          <span className="font-body text-[9px] max-md:text-[8px] tracking-[0.3em] uppercase text-muted-foreground block mt-0.5">
+            GAIA — APP
+          </span>
+        </div>
+
         {/* Hamburger */}
         <button
           className="z-20 bg-background/25 backdrop-blur-sm border border-background/40 rounded-xl p-2.5 cursor-pointer flex flex-col gap-[5px] hover:bg-background/45 transition-colors"
