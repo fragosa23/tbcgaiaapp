@@ -17,7 +17,7 @@ const BannerHeader = ({ onNavigate }: BannerHeaderProps) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <div className="relative flex-shrink-0 sticky top-0 z-[101] w-full overflow-visible" style={{ background: 'linear-gradient(135deg, hsl(340 33% 96%), hsl(340 50% 92%), hsl(340 33% 96%))' }}>
+    <div className="relative flex-shrink-0 sticky top-0 z-[101] w-full overflow-visible bg-transparent">
       <div className="flex items-center justify-between h-[70px] max-md:h-[56px] px-4">
         {/* Logo button */}
         <button

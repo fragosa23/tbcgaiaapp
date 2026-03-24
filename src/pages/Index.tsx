@@ -83,6 +83,18 @@ const Index = () => {
 
   return (
     <div className="fixed inset-0 flex flex-col overflow-hidden">
+      {/* Fixed background video */}
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="fixed inset-0 w-full h-full object-cover z-0"
+      >
+        <source src="/videos/hero-bg.mp4" type="video/mp4" />
+      </video>
+      <div className="fixed inset-0 bg-pink/40 z-0" />
+
       <BannerHeader onNavigate={navigate} />
 
       <div className="flex-1 overflow-y-auto overflow-x-hidden" style={{ WebkitOverflowScrolling: "touch" }}>
