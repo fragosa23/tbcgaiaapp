@@ -94,6 +94,14 @@ const AssistantSection = ({ cart, onChangeQty, onRemoveFromCart, lastAddedProduc
     });
   }, [cart]);
 
+  // Handle pending message from "Saber mais"
+  useEffect(() => {
+    if (pendingMessage) {
+      sendMessage(pendingMessage);
+      onPendingMessageConsumed?.();
+    }
+  }, [pendingMessage]);
+
   const sendMessage = useCallback((text?: string) => {
     const t = (text || input).trim();
     if (!t) return;
