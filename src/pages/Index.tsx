@@ -57,6 +57,14 @@ const Index = () => {
     setAddVersion((v) => v + 1);
     setShowToast(true);
     setTimeout(() => setShowToast(false), 2500);
+  }, []);
+
+  const saberMais = useCallback((id: string) => {
+    const p = campaigns.find((c) => c.id === id);
+    if (!p) return;
+    setPendingChatMessage(`Quero saber mais sobre ${p.name}`);
+    setPrevSection(section);
+    setSection("assistant");
   }, [section]);
 
   const changeQty = useCallback((id: string, delta: number) => {
