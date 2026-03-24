@@ -93,7 +93,7 @@ const Index = () => {
       >
         <source src="/videos/hero-bg.mp4" type="video/mp4" />
       </video>
-      <div className="fixed inset-0 bg-pink/40 z-0" />
+      <div className="fixed inset-0 z-0" style={{ background: 'rgba(0,0,0,0.45)' }} />
 
       <BannerHeader onNavigate={navigate} />
 

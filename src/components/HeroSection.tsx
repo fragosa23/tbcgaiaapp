@@ -8,9 +8,9 @@ interface HeroSectionProps {
 const HeroSection = ({ onNavigate, onOpenProduct }: HeroSectionProps) => {
   return (
     <section className="relative z-[1] flex flex-col items-center justify-center text-center px-7 pt-[52px] min-h-[calc(100vh-212px)]">
-      <h1 className="font-display text-[clamp(28px,5.5vw,52px)] font-light text-foreground leading-[1.15] mb-10 animate-fade-up-delay-1">
+      <h1 className="font-display text-[clamp(28px,5.5vw,52px)] font-light leading-[1.15] mb-10 animate-fade-up-delay-1" style={{ color: '#ffffff', textShadow: '0 2px 12px rgba(0,0,0,0.4)' }}>
         Bem-vindo à app da sua<br />
-        loja de <em className="italic text-pink-deep">Gaia</em>
+        loja de <em className="italic" style={{ color: '#fce8ef' }}>Gaia</em>
       </h1>
       <div className="flex gap-3 mb-8 animate-fade-up-delay-2">
         <button
