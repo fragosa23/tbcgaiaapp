@@ -97,7 +97,7 @@ const Index = () => {
 
       <BannerHeader onNavigate={navigate} />
 
-      <div className="flex-1 overflow-y-auto overflow-x-hidden" style={{ WebkitOverflowScrolling: "touch" }}>
+      <div className="relative z-[1] flex-1 overflow-y-auto overflow-x-hidden" style={{ WebkitOverflowScrolling: "touch" }}>
         {section === "home" && <HeroSection onNavigate={navigate} onOpenProduct={openProduct} />}
         {section === "campaigns" && <CampaignsSection onOpenProduct={openProduct} />}
         {section === "products" && <ProductsSection />}
