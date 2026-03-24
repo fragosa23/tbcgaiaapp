@@ -96,6 +96,8 @@ const Index = () => {
             onRemoveFromCart={removeFromCart}
             lastAddedProductId={lastAddedProductId}
             addVersion={addVersion}
+            pendingMessage={pendingChatMessage}
+            onPendingMessageConsumed={() => setPendingChatMessage(null)}
           />
         )}
         {section === "contact" && <ContactSection />}
