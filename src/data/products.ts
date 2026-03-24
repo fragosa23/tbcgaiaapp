@@ -59,6 +59,14 @@ export const chatResponses: Record<string, string> = {
 
 export function getChatResponse(msg: string): string {
   const m = msg.toLowerCase();
+
+  // Check if asking about a specific product
+  const product = campaigns.find((p) => m.includes(p.name.toLowerCase()));
+  if (product) {
+    const benefitsList = product.benefits.slice(0, 3).map(b => `• ${b}`).join("<br/>");
+    return `Claro! 😍 O <strong>${product.name}</strong> é fantástico!<br/><br/>${product.desc}<br/><br/>Alguns destaques:<br/>${benefitsList}<br/><br/>Está a <strong>${product.now}</strong> (antes ${product.before}) ${product.badge} 🎉<br/><br/>Quer saber mais detalhes ou adicionar ao carrinho? 💖`;
+  }
+
   if (m.includes("seca")) return chatResponses.seca;
   if (m.includes("oleosa")) return chatResponses.oleosa;
   if (m.includes("base")) return chatResponses.base;

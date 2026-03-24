@@ -26,6 +26,7 @@ const Index = () => {
   const [showToast, setShowToast] = useState(false);
   const [lastAddedProductId, setLastAddedProductId] = useState<string | null>(null);
   const [addVersion, setAddVersion] = useState(0);
+  const [pendingChatMessage, setPendingChatMessage] = useState<string | null>(null);
 
   const navigate = useCallback((id: string) => {
     setPrevSection(section);
@@ -56,6 +57,14 @@ const Index = () => {
     setAddVersion((v) => v + 1);
     setShowToast(true);
     setTimeout(() => setShowToast(false), 2500);
+  }, []);
+
+  const saberMais = useCallback((id: string) => {
+    const p = campaigns.find((c) => c.id === id);
+    if (!p) return;
+    setPendingChatMessage(`Quero saber mais sobre ${p.name}`);
+    setPrevSection(section);
+    setSection("assistant");
   }, [section]);
 
   const changeQty = useCallback((id: string, delta: number) => {
@@ -87,6 +96,8 @@ const Index = () => {
             onRemoveFromCart={removeFromCart}
             lastAddedProductId={lastAddedProductId}
             addVersion={addVersion}
+            pendingMessage={pendingChatMessage}
+            onPendingMessageConsumed={() => setPendingChatMessage(null)}
           />
         )}
         {section === "contact" && <ContactSection />}
@@ -96,6 +107,7 @@ const Index = () => {
             onBack={goBack}
             onNavigate={navigate}
             onAddToCart={addToCart}
+            onSaberMais={saberMais}
           />
         )}
         <SiteFooter />

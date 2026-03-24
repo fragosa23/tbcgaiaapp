@@ -15,6 +15,8 @@ interface AssistantSectionProps {
   onRemoveFromCart: (id: string) => void;
   lastAddedProductId: string | null;
   addVersion: number;
+  pendingMessage?: string | null;
+  onPendingMessageConsumed?: () => void;
 }
 
 interface Message {
@@ -35,7 +37,7 @@ const suggestions = [
 
 let msgCounter = 1;
 
-const AssistantSection = ({ cart, onChangeQty, onRemoveFromCart, lastAddedProductId, addVersion }: AssistantSectionProps) => {
+const AssistantSection = ({ cart, onChangeQty, onRemoveFromCart, lastAddedProductId, addVersion, pendingMessage, onPendingMessageConsumed }: AssistantSectionProps) => {
   const [messages, setMessages] = useState<Message[]>([
     { id: 0, content: 'Olá! Sou a <strong>Gaia</strong>, a sua consultora de beleza virtual. 💄<br/>Como posso ajudá-la hoje?', role: "bot", type: "text" },
   ]);
@@ -91,6 +93,14 @@ const AssistantSection = ({ cart, onChangeQty, onRemoveFromCart, lastAddedProduc
       return prev; // cart-summary reads from cart prop directly
     });
   }, [cart]);
+
+  // Handle pending message from "Saber mais"
+  useEffect(() => {
+    if (pendingMessage) {
+      sendMessage(pendingMessage);
+      onPendingMessageConsumed?.();
+    }
+  }, [pendingMessage]);
 
   const sendMessage = useCallback((text?: string) => {
     const t = (text || input).trim();

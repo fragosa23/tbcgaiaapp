@@ -5,9 +5,10 @@ interface ProductDetailProps {
   onBack: () => void;
   onNavigate: (section: string) => void;
   onAddToCart: (id: string) => void;
+  onSaberMais: (id: string) => void;
 }
 
-const ProductDetail = ({ productId, onBack, onNavigate, onAddToCart }: ProductDetailProps) => {
+const ProductDetail = ({ productId, onBack, onNavigate, onAddToCart, onSaberMais }: ProductDetailProps) => {
   const product = campaigns.find((p) => p.id === productId) as Campaign;
   if (!product) return null;
 
@@ -68,27 +69,11 @@ const ProductDetail = ({ productId, onBack, onNavigate, onAddToCart }: ProductDe
               Adicionar ao carrinho 🛍️
             </button>
             <button
-              onClick={() => onNavigate("assistant")}
+              onClick={() => onSaberMais(product.id)}
               className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full font-body text-xs font-medium tracking-[.12em] uppercase cursor-pointer bg-white/80 text-pink-deep border-2 border-pink hover:bg-pink-light transition-all"
             >
               Saber mais
             </button>
-          </div>
-
-          <div className="grid grid-cols-3 gap-3 mt-8">
-            {[
-              { icon: "📦", label: "Volume", val: product.volume },
-              { icon: "✨", label: "Uso", val: product.uso },
-              { icon: "🌸", label: "Indicado", val: product.tipo },
-            ].map((box) => (
-              <div key={box.label} className="bg-white/70 rounded-[14px] p-4 border border-border text-center">
-                <div className="text-[22px] mb-1.5">{box.icon}</div>
-                <div className="text-[10px] tracking-[.1em] uppercase text-pink-deep font-medium mb-0.5">
-                  {box.label}
-                </div>
-                <div className="text-xs text-mid font-light">{box.val}</div>
-              </div>
-            ))}
           </div>
         </div>
       </div>
