@@ -5,6 +5,7 @@ interface ProductDetailProps {
   onBack: () => void;
   onNavigate: (section: string) => void;
   onAddToCart: (id: string) => void;
+  onSaberMais: (id: string) => void;
 }
 
 const ProductDetail = ({ productId, onBack, onNavigate, onAddToCart }: ProductDetailProps) => {
