@@ -26,6 +26,7 @@ const Index = () => {
   const [showToast, setShowToast] = useState(false);
   const [lastAddedProductId, setLastAddedProductId] = useState<string | null>(null);
   const [addVersion, setAddVersion] = useState(0);
+  const [pendingChatMessage, setPendingChatMessage] = useState<string | null>(null);
 
   const navigate = useCallback((id: string) => {
     setPrevSection(section);
