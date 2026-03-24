@@ -8,7 +8,7 @@ interface ProductDetailProps {
   onSaberMais: (id: string) => void;
 }
 
-const ProductDetail = ({ productId, onBack, onNavigate, onAddToCart }: ProductDetailProps) => {
+const ProductDetail = ({ productId, onBack, onNavigate, onAddToCart, onSaberMais }: ProductDetailProps) => {
   const product = campaigns.find((p) => p.id === productId) as Campaign;
   if (!product) return null;
 
