@@ -107,6 +107,7 @@ const Index = () => {
             onBack={goBack}
             onNavigate={navigate}
             onAddToCart={addToCart}
+            onSaberMais={saberMais}
           />
         )}
         <SiteFooter />
