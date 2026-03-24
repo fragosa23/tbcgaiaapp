@@ -7,7 +7,7 @@ interface HeroSectionProps {
 
 const HeroSection = ({ onNavigate, onOpenProduct }: HeroSectionProps) => {
   return (
-    <section className="flex flex-col items-center justify-center text-center px-7 pt-[52px] min-h-[calc(100vh-212px)]">
+    <section className="relative z-[1] flex flex-col items-center justify-center text-center px-7 pt-[52px] min-h-[calc(100vh-212px)]">
       <h1 className="font-display text-[clamp(28px,5.5vw,52px)] font-light text-foreground leading-[1.15] mb-10 animate-fade-up-delay-1">
         Bem-vindo à app da sua<br />
         loja de <em className="italic text-pink-deep">Gaia</em>
