@@ -15,6 +15,8 @@ interface AssistantSectionProps {
   onRemoveFromCart: (id: string) => void;
   lastAddedProductId: string | null;
   addVersion: number;
+  pendingMessage?: string | null;
+  onPendingMessageConsumed?: () => void;
 }
 
 interface Message {
