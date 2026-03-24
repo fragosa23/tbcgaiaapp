@@ -37,7 +37,7 @@ const suggestions = [
 
 let msgCounter = 1;
 
-const AssistantSection = ({ cart, onChangeQty, onRemoveFromCart, lastAddedProductId, addVersion }: AssistantSectionProps) => {
+const AssistantSection = ({ cart, onChangeQty, onRemoveFromCart, lastAddedProductId, addVersion, pendingMessage, onPendingMessageConsumed }: AssistantSectionProps) => {
   const [messages, setMessages] = useState<Message[]>([
     { id: 0, content: 'Olá! Sou a <strong>Gaia</strong>, a sua consultora de beleza virtual. 💄<br/>Como posso ajudá-la hoje?', role: "bot", type: "text" },
   ]);
