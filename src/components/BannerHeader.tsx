@@ -52,9 +52,9 @@ const BannerHeader = ({ onNavigate }: BannerHeaderProps) => {
             setMenuOpen(!menuOpen);
           }}
         >
-          <span className="block w-[22px] h-[2px] bg-foreground rounded-full" />
-          <span className="block w-[22px] h-[2px] bg-foreground rounded-full" />
-          <span className="block w-[22px] h-[2px] bg-foreground rounded-full" />
+          <span className="block w-[22px] h-[2px] bg-white rounded-full" style={{ filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.3))' }} />
+          <span className="block w-[22px] h-[2px] bg-white rounded-full" style={{ filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.3))' }} />
+          <span className="block w-[22px] h-[2px] bg-white rounded-full" style={{ filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.3))' }} />
         </button>
       </div>
 
