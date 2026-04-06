@@ -36,10 +36,10 @@ const BannerHeader = ({ onNavigate }: BannerHeaderProps) => {
 
         {/* Center title */}
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none select-none">
-          <span className="font-display text-[15px] max-md:text-[12px] tracking-[0.15em] uppercase text-foreground/80 leading-tight block">
+          <span className="font-display text-[15px] max-md:text-[12px] tracking-[0.15em] uppercase leading-tight block" style={{ color: '#ffffff', textShadow: '0 1px 8px rgba(0,0,0,0.5)' }}>
             TheBeautyCorner
           </span>
-          <span className="font-body text-[9px] max-md:text-[8px] tracking-[0.3em] uppercase text-muted-foreground block mt-0.5">
+          <span className="font-body text-[9px] max-md:text-[8px] tracking-[0.3em] uppercase block mt-0.5" style={{ color: 'rgba(255,255,255,0.7)', textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}>
             GAIA — APP
           </span>
         </div>
