@@ -19,7 +19,7 @@ const CampaignsSection = ({ onOpenProduct }: CampaignsSectionProps) => {
         {campaigns.map((p, i) => (
           <div
             key={p.id}
-            className="bg-white/82 backdrop-blur-[10px] rounded-lg overflow-hidden border border-border shadow-card hover:-translate-y-2 hover:shadow-hover transition-all cursor-pointer"
+            className="bg-white backdrop-blur-[10px] rounded-lg overflow-hidden border border-border shadow-card hover:-translate-y-2 hover:shadow-hover transition-all cursor-pointer"
             style={{ animationDelay: `${i * 0.07}s` }}
             onClick={() => onOpenProduct(p.id)}
           >
