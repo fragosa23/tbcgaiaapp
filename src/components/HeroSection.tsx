@@ -33,7 +33,7 @@ const HeroSection = ({ onNavigate, onOpenProduct }: HeroSectionProps) => {
           {[...campaigns, ...campaigns].map((p, i) => (
             <div
               key={`${p.id}-${i}`}
-              className="flex-shrink-0 w-[195px] bg-white/82 backdrop-blur-[10px] rounded-2xl overflow-hidden border border-border shadow-card hover:-translate-y-1.5 hover:shadow-hover transition-all cursor-pointer max-md:w-[160px]"
+              className="flex-shrink-0 w-[195px] bg-white backdrop-blur-[10px] rounded-2xl overflow-hidden border border-border shadow-card hover:-translate-y-1.5 hover:shadow-hover transition-all cursor-pointer max-md:w-[160px]"
               onClick={() => onOpenProduct(p.id)}
             >
               <div className="w-full aspect-square bg-gradient-to-br from-pink-light to-rose flex items-center justify-center text-[50px] relative">
