@@ -5,11 +5,11 @@ const ContactSection = () => {
 
   return (
     <section className="px-9 py-[52px] pb-[72px] max-w-[1120px] mx-auto max-md:px-[18px] max-md:py-8 max-md:pb-[52px]">
-      <span className="inline-flex items-center gap-2 text-[11px] tracking-[.18em] uppercase text-pink-deep font-medium mb-3 before:block before:w-6 before:h-px before:bg-pink">
+      <span className="inline-flex items-center gap-2 text-[11px] tracking-[.18em] uppercase font-medium mb-3 before:block before:w-6 before:h-px before:bg-pink" style={{ color: '#ffffff', textShadow: '0 1px 8px rgba(0,0,0,0.5)' }}>
         Estamos Aqui
       </span>
-      <h2 className="font-display text-[clamp(30px,5vw,50px)] font-light text-foreground leading-[1.1] mb-1.5">
-        Entre em<br /><em className="italic text-pink-deep">Contacto</em>
+      <h2 className="font-display text-[clamp(30px,5vw,50px)] font-light leading-[1.1] mb-1.5" style={{ color: '#ffffff', textShadow: '0 2px 12px rgba(0,0,0,0.5)' }}>
+        Entre em<br /><em className="italic text-pink-deep" style={{ textShadow: '0 2px 10px rgba(0,0,0,0.3)' }}>Contacto</em>
       </h2>
       <div className="w-11 h-0.5 bg-gradient-to-r from-pink to-transparent rounded-full mt-4 mb-10" />
 
