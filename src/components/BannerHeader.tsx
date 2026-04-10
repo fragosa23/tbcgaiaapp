@@ -61,7 +61,7 @@ const BannerHeader = ({ onNavigate }: BannerHeaderProps) => {
       {/* Dropdown nav */}
       {menuOpen && (
         <div
-          className="absolute top-[calc(100%+4px)] right-4 bg-cream/97 backdrop-blur-xl rounded-2xl border border-border shadow-elevated p-2.5 flex flex-col gap-0.5 z-[200] min-w-[200px]"
+          className="absolute top-[calc(100%+4px)] right-4 bg-white backdrop-blur-xl rounded-2xl border border-border shadow-elevated p-2.5 flex flex-col gap-0.5 z-[200] min-w-[200px]"
           onClick={(e) => e.stopPropagation()}
         >
           {navItems.map((item) => (
