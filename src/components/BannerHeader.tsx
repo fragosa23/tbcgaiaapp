@@ -67,7 +67,7 @@ const BannerHeader = ({ onNavigate }: BannerHeaderProps) => {
           {navItems.map((item) => (
             <button
               key={item.section}
-              className="text-[13px] font-medium tracking-wider uppercase text-mid text-left px-4 py-3 rounded-[10px] hover:bg-pink-light hover:text-pink-deep transition-colors"
+              className="text-[13px] font-semibold tracking-wider uppercase text-foreground text-left px-4 py-3 rounded-[10px] hover:bg-pink-light hover:text-pink-deep transition-colors"
               onClick={() => {
                 onNavigate(item.section);
                 setMenuOpen(false);

@@ -22,7 +22,7 @@ const ContactSection = () => {
         ].map((item) => (
           <div
             key={item.label}
-            className="bg-white/82 backdrop-blur-[10px] rounded-lg p-6 px-5 border border-border shadow-card flex items-start gap-3.5 hover:-translate-y-1 transition-transform"
+            className="bg-white backdrop-blur-[10px] rounded-lg p-6 px-5 border border-border shadow-card flex items-start gap-3.5 hover:-translate-y-1 transition-transform"
           >
             <div className="w-[46px] h-[46px] rounded-[14px] flex-shrink-0 bg-gradient-to-br from-pink-light to-rose flex items-center justify-center text-xl">
               {item.icon}
@@ -41,7 +41,7 @@ const ContactSection = () => {
         ))}
       </div>
 
-      <div className="bg-white/82 rounded-lg p-8 border border-border shadow-elevated mt-6 max-md:p-[22px]">
+      <div className="bg-white rounded-lg p-8 border border-border shadow-elevated mt-6 max-md:p-[22px]">
         <h3 className="font-display text-[26px] font-normal text-foreground mb-6">Envie-nos uma mensagem</h3>
         <div className="grid grid-cols-2 gap-3.5 mb-3.5 max-md:grid-cols-1">
           <div className="flex flex-col gap-1.5">
