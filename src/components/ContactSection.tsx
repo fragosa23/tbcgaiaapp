@@ -5,11 +5,11 @@ const ContactSection = () => {
 
   return (
     <section className="px-9 py-[52px] pb-[72px] max-w-[1120px] mx-auto max-md:px-[18px] max-md:py-8 max-md:pb-[52px]">
-      <span className="inline-flex items-center gap-2 text-[11px] tracking-[.18em] uppercase text-pink-deep font-medium mb-3 before:block before:w-6 before:h-px before:bg-pink">
+      <span className="inline-flex items-center gap-2 text-[11px] tracking-[.18em] uppercase font-medium mb-3 before:block before:w-6 before:h-px before:bg-pink" style={{ color: '#ffffff', textShadow: '0 1px 8px rgba(0,0,0,0.5)' }}>
         Estamos Aqui
       </span>
-      <h2 className="font-display text-[clamp(30px,5vw,50px)] font-light text-foreground leading-[1.1] mb-1.5">
-        Entre em<br /><em className="italic text-pink-deep">Contacto</em>
+      <h2 className="font-display text-[clamp(30px,5vw,50px)] font-light leading-[1.1] mb-1.5" style={{ color: '#ffffff', textShadow: '0 2px 12px rgba(0,0,0,0.5)' }}>
+        Entre em<br /><em className="italic text-pink-deep" style={{ textShadow: '0 2px 10px rgba(0,0,0,0.3)' }}>Contacto</em>
       </h2>
       <div className="w-11 h-0.5 bg-gradient-to-r from-pink to-transparent rounded-full mt-4 mb-10" />
 
@@ -22,7 +22,7 @@ const ContactSection = () => {
         ].map((item) => (
           <div
             key={item.label}
-            className="bg-white/82 backdrop-blur-[10px] rounded-lg p-6 px-5 border border-border shadow-card flex items-start gap-3.5 hover:-translate-y-1 transition-transform"
+            className="bg-white backdrop-blur-[10px] rounded-lg p-6 px-5 border border-border shadow-card flex items-start gap-3.5 hover:-translate-y-1 transition-transform"
           >
             <div className="w-[46px] h-[46px] rounded-[14px] flex-shrink-0 bg-gradient-to-br from-pink-light to-rose flex items-center justify-center text-xl">
               {item.icon}
@@ -41,7 +41,7 @@ const ContactSection = () => {
         ))}
       </div>
 
-      <div className="bg-white/82 rounded-lg p-8 border border-border shadow-elevated mt-6 max-md:p-[22px]">
+      <div className="bg-white rounded-lg p-8 border border-border shadow-elevated mt-6 max-md:p-[22px]">
         <h3 className="font-display text-[26px] font-normal text-foreground mb-6">Envie-nos uma mensagem</h3>
         <div className="grid grid-cols-2 gap-3.5 mb-3.5 max-md:grid-cols-1">
           <div className="flex flex-col gap-1.5">
